@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/identitystore"
 )
 
-func ListUser(sess *session.Session) {
+func GetUserId(username string, sess *session.Session) {
 	svc := identitystore.New(sess, &aws.Config{
 		Region:                        aws.String("ap-northeast-1"),
 		Endpoint:                      aws.String("https://identitystore.ap-northeast-1.amazonaws.com"),
@@ -26,10 +26,16 @@ func ListUser(sess *session.Session) {
 			return
 		}
 
-		// 处理 resp.Users 中的用户结果
 		for _, user := range resp.Users {
-			fmt.Println(*user.UserName, *user.UserId)
+
+			if *user.UserName == username {
+				fmt.Println("Found user with matching email:")
+				fmt.Println("User ID: ", *user.UserId)
+				fmt.Println("User Email: ", *user.Emails[0].Value)
+				break
+			}
 		}
+
 		// 检查是否还有更多结果
 		if resp.NextToken != nil {
 			params.NextToken = resp.NextToken // 设置下一页请求的令牌
@@ -37,6 +43,4 @@ func ListUser(sess *session.Session) {
 			break // 已获取所有结果，退出循环
 		}
 	}
-
-	fmt.Println("All users retrieved!")
 }
