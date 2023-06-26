@@ -1,13 +1,12 @@
 package lib
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/identitystore"
 )
 
-func GetUserId(username string, sess *session.Session) {
+func GetUserId(sess *session.Session, email string) (string, error) {
 	svc := identitystore.New(sess, &aws.Config{
 		Region:                        aws.String("ap-northeast-1"),
 		Endpoint:                      aws.String("https://identitystore.ap-northeast-1.amazonaws.com"),
@@ -22,25 +21,21 @@ func GetUserId(username string, sess *session.Session) {
 	for {
 		resp, err := svc.ListUsers(params)
 		if err != nil {
-			fmt.Println("Error2:", err)
-			return
+			return "", nil
 		}
 
 		for _, user := range resp.Users {
 
-			if *user.UserName == username {
-				fmt.Println("Found user with matching email:")
-				fmt.Println("User ID: ", *user.UserId)
-				fmt.Println("User Email: ", *user.Emails[0].Value)
-				break
+			if *user.Emails[0].Value == email || *user.UserName == email {
+				return *user.UserId, nil
 			}
 		}
 
-		// 检查是否还有更多结果
+		// check the other results
 		if resp.NextToken != nil {
-			params.NextToken = resp.NextToken // 设置下一页请求的令牌
+			params.NextToken = resp.NextToken // Next page token
 		} else {
-			break // 已获取所有结果，退出循环
+			return "", nil
 		}
 	}
 }

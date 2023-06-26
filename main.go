@@ -18,5 +18,8 @@ func main() {
 
 	// lib.ListUser(sess)
 
-	lib.GetUserId("yunjie.xiao@pingcap.com", sess)
+	userid, _ := lib.GetUserId(sess, "yunjie.xiao@pingcap.com")
+	PermissionSetArn := "arn:aws:sso:::permissionSet/ssoins-7758e707bb6ea352/ps-cc8887ee3dd4c3d0" // Dbaas-ViewOnly-Role
+	targetId := "316218510314"
+	lib.Auth(sess, targetId, PermissionSetArn, userid)
 }
