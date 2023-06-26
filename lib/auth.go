@@ -1,12 +1,14 @@
 package lib
+
 import (
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
-	"fmt"
 )
 
-func Auth(sess *session.Session){
+// Auth :an example of auth
+func Auth(sess *session.Session) {
 	svc := ssoadmin.New(sess)
 
 	params := &ssoadmin.CreateAccountAssignmentInput{
