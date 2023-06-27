@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"errors"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -23,6 +24,38 @@ func Auth(sess *session.Session, targetId string, permissionSetArn string, princ
 
 	_, err := svc.CreateAccountAssignment(params)
 	if err != nil {
+		return err
+	}
+
+	listInput := &ssoadmin.ListAccountAssignmentCreationStatusInput{
+		InstanceArn: cfg.InstanceArn,
+	}
+
+	listOutput, err := svc.ListAccountAssignmentCreationStatus(listInput)
+	if len(listOutput.AccountAssignmentsCreationStatus) > 0 {
+		requestId := listOutput.AccountAssignmentsCreationStatus[0].RequestId
+		fmt.Println("Request ID:", *requestId)
+
+		describeInput := &ssoadmin.DescribeAccountAssignmentCreationStatusInput{
+			InstanceArn:                        cfg.InstanceArn,
+			AccountAssignmentCreationRequestId: requestId,
+		}
+
+		describeOutput, err := svc.DescribeAccountAssignmentCreationStatus(describeInput)
+		if err != nil {
+			return err
+		}
+
+		Status := *describeOutput.AccountAssignmentCreationStatus.Status
+		FailureReason := describeOutput.AccountAssignmentCreationStatus.FailureReason
+		fmt.Println("Status: " + Status)
+		if FailureReason != nil {
+			err := errors.New(*FailureReason)
+			return err
+		}
+
+	} else {
+		err := errors.New("No Account Assignment Creation Status found.")
 		return err
 	}
 
