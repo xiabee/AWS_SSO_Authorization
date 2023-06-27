@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/aws/aws-sdk-go/aws/session"
+	"log"
 	"main/lib"
 )
 
@@ -11,13 +12,20 @@ func main() {
 		SharedConfigState: session.SharedConfigEnable,
 	})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	userid, _ := lib.GetUserId(sess, "yunjie.xiao@pingcap.com")
-	PermissionSetArn, _ := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role")
+	userid, err := lib.GetUserId(sess, "yunjie.xiao@pingcap.com")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	PermissionSetArn, err := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role")
 	targetId := "316218510314"
 
-	lib.Auth(sess, targetId, PermissionSetArn, userid)
-	lib.Revoke(sess, targetId, PermissionSetArn, userid)
+	err = lib.Auth(sess, targetId, PermissionSetArn, userid)
+	// err = lib.Revoke(sess, targetId, PermissionSetArn, userid)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

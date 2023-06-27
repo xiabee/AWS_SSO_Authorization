@@ -8,7 +8,7 @@ import (
 	"main/cfg"
 )
 
-func Revoke(sess *session.Session, targetId string, permissionSetArn string, principalId string) {
+func Revoke(sess *session.Session, targetId string, permissionSetArn string, principalId string) error {
 	svc := ssoadmin.New(sess)
 
 	params := &ssoadmin.DeleteAccountAssignmentInput{
@@ -22,9 +22,9 @@ func Revoke(sess *session.Session, targetId string, permissionSetArn string, pri
 
 	_, err := svc.DeleteAccountAssignment(params)
 	if err != nil {
-		fmt.Println("Failed:", err)
-		return
+		return err
 	}
 
 	fmt.Println("Successfully Revoked!")
+	return nil
 }

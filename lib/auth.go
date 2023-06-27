@@ -9,7 +9,7 @@ import (
 )
 
 // Auth :an example of auth
-func Auth(sess *session.Session, targetId string, permissionSetArn string, principalId string) {
+func Auth(sess *session.Session, targetId string, permissionSetArn string, principalId string) error {
 	svc := ssoadmin.New(sess)
 
 	params := &ssoadmin.CreateAccountAssignmentInput{
@@ -23,9 +23,9 @@ func Auth(sess *session.Session, targetId string, permissionSetArn string, princ
 
 	_, err := svc.CreateAccountAssignment(params)
 	if err != nil {
-		fmt.Println("Failed:", err)
-		return
+		return err
 	}
 
 	fmt.Println("Successfully Authorized!")
+	return nil
 }

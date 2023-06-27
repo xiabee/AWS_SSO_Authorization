@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"errors"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/identitystore"
@@ -36,7 +37,8 @@ func GetUserId(sess *session.Session, email string) (string, error) {
 		if resp.NextToken != nil {
 			params.NextToken = resp.NextToken // Next page token
 		} else {
-			return "", nil
+			err := errors.New("Failed: User email not found")
+			return "", err
 		}
 	}
 }
