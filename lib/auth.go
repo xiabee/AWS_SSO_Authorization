@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
 	"main/cfg"
+	"time"
 )
 
 // Auth :an example of auth
@@ -41,17 +42,25 @@ func Auth(sess *session.Session, targetId string, permissionSetArn string, princ
 			AccountAssignmentCreationRequestId: requestId,
 		}
 
-		describeOutput, err := svc.DescribeAccountAssignmentCreationStatus(describeInput)
-		if err != nil {
-			return err
-		}
+		// Polling to check the status of the request
+		for {
+			describeOutput, err := svc.DescribeAccountAssignmentCreationStatus(describeInput)
+			if err != nil {
+				return err
+			}
 
-		Status := *describeOutput.AccountAssignmentCreationStatus.Status
-		FailureReason := describeOutput.AccountAssignmentCreationStatus.FailureReason
-		fmt.Println("Status: " + Status)
-		if FailureReason != nil {
-			err := errors.New(*FailureReason)
-			return err
+			Status := *describeOutput.AccountAssignmentCreationStatus.Status
+			FailureReason := describeOutput.AccountAssignmentCreationStatus.FailureReason
+			fmt.Println("Status: " + Status)
+			if FailureReason != nil {
+				err := errors.New(*FailureReason)
+				return err
+			}
+
+			if Status == ssoadmin.StatusValuesSucceeded || Status == ssoadmin.StatusValuesFailed {
+				break
+			}
+			time.Sleep(time.Second * (time.Duration(cfg.SleepTime)))
 		}
 
 	} else {

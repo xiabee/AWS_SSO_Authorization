@@ -14,3 +14,4 @@ var TargetType *string = aws.String("AWS_ACCOUNT")
 var PrincipalType *string = aws.String("USER")
 
 var MaxResults *int64 = aws.Int64(100) // Max request is 100
+var SleepTime int = 1                  // Seconds of polling check
