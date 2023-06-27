@@ -22,7 +22,7 @@ func ListUser(sess *session.Session) {
 	for {
 		resp, err := svc.ListUsers(params)
 		if err != nil {
-			fmt.Println("Error2:", err)
+			fmt.Println("Error:", err)
 			return
 		}
 

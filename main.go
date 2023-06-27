@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"main/lib"
 )
@@ -20,4 +21,7 @@ func main() {
 
 	//lib.Auth(sess, targetId, PermissionSetArn, userid)
 	lib.Revoke(sess, targetId, PermissionSetArn, userid)
+
+	arn, _ := lib.GetPermissionSetArn(sess, "Dbaas-ViewOnly-Role")
+	fmt.Println(arn)
 }

@@ -15,7 +15,7 @@ func GetUserId(sess *session.Session, email string) (string, error) {
 
 	params := &identitystore.ListUsersInput{
 		IdentityStoreId: aws.String("d-95670a3c83"),
-		MaxResults:      aws.Int64(100), // 设置每次返回的最大结果数
+		MaxResults:      aws.Int64(100), // Max request is 100
 	}
 
 	for {
