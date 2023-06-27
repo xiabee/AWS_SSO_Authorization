@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
+	"main/cfg"
 )
 
 // GetPermissionSetName : Get Permission set Arn from Permission set name
@@ -29,7 +30,8 @@ func GetPermissionSetArn(sess *session.Session, permissionSetName string) (strin
 	client := ssoadmin.New(sess)
 
 	params := &ssoadmin.ListPermissionSetsInput{
-		InstanceArn: aws.String("arn:aws:sso:::instance/ssoins-7758e707bb6ea352"),
+		InstanceArn: cfg.InstanceArn,
+		MaxResults:  cfg.MaxResults,
 	}
 
 	for {

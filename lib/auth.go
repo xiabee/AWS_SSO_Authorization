@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
+	"main/cfg"
 )
 
 // Auth :an example of auth
@@ -12,11 +13,11 @@ func Auth(sess *session.Session, targetId string, permissionSetArn string, princ
 	svc := ssoadmin.New(sess)
 
 	params := &ssoadmin.CreateAccountAssignmentInput{
-		InstanceArn:      aws.String("arn:aws:sso:::instance/ssoins-7758e707bb6ea352"),
+		InstanceArn:      cfg.InstanceArn,
 		TargetId:         aws.String(targetId),
-		TargetType:       aws.String("AWS_ACCOUNT"),
+		TargetType:       cfg.TargetType,
 		PermissionSetArn: aws.String(permissionSetArn),
-		PrincipalType:    aws.String("USER"),
+		PrincipalType:    cfg.PrincipalType,
 		PrincipalId:      aws.String(principalId),
 	}
 

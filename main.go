@@ -18,6 +18,6 @@ func main() {
 	PermissionSetArn, _ := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role")
 	targetId := "316218510314"
 
-	//lib.Auth(sess, targetId, PermissionSetArn, userid)
+	lib.Auth(sess, targetId, PermissionSetArn, userid)
 	lib.Revoke(sess, targetId, PermissionSetArn, userid)
 }

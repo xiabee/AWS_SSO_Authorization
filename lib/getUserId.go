@@ -4,18 +4,19 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/identitystore"
+	"main/cfg"
 )
 
 func GetUserId(sess *session.Session, email string) (string, error) {
 	svc := identitystore.New(sess, &aws.Config{
-		Region:                        aws.String("ap-northeast-1"),
-		Endpoint:                      aws.String("https://identitystore.ap-northeast-1.amazonaws.com"),
+		Region:                        cfg.Region,
+		Endpoint:                      cfg.Endpoint,
 		CredentialsChainVerboseErrors: aws.Bool(true),
 	})
 
 	params := &identitystore.ListUsersInput{
-		IdentityStoreId: aws.String("d-95670a3c83"),
-		MaxResults:      aws.Int64(100), // Max request is 100
+		IdentityStoreId: cfg.IdentityStoreId,
+		MaxResults:      cfg.MaxResults,
 	}
 
 	for {
