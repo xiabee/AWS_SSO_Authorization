@@ -25,5 +25,5 @@ func Revoke(sess *session.Session, targetId string, permissionSetArn string, pri
 		return
 	}
 
-	fmt.Println("Success!")
+	fmt.Println("Successfully Revoked!")
 }

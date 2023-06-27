@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
@@ -39,20 +38,15 @@ func GetPermissionSetArn(sess *session.Session, permissionSetName string) (strin
 			return "", err
 		}
 
-		for _, permissionSet := range resp.PermissionSets {
-
-			name, err := GetPermissionSetName(sess, aws.StringValue(permissionSet))
-			fmt.Println(name, permissionSet)
+		for _, currentArn := range resp.PermissionSets {
+			Arn := *currentArn
+			curName, err := GetPermissionSetName(sess, Arn)
 			if err != nil {
 				return "", err
 			}
-
-			if name == permissionSetName {
-				fmt.Println(aws.StringValue(permissionSet))
-				break
+			if curName == permissionSetName {
+				return Arn, nil
 			}
-
-			// fmt.Println("Permission Set ARN:", aws.StringValue(permissionSet))
 		}
 
 		// check the other results
@@ -62,5 +56,5 @@ func GetPermissionSetArn(sess *session.Session, permissionSetName string) (strin
 			break
 		}
 	}
-	return "", nil
+	return "PermissionSet Not Found!", nil
 }

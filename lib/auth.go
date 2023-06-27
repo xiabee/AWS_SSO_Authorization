@@ -26,5 +26,5 @@ func Auth(sess *session.Session, targetId string, permissionSetArn string, princ
 		return
 	}
 
-	fmt.Println("Success!")
+	fmt.Println("Successfully Authorized!")
 }
