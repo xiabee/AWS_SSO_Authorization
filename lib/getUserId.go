@@ -37,7 +37,7 @@ func GetUserId(sess *session.Session, email string) (string, error) {
 		if resp.NextToken != nil {
 			params.NextToken = resp.NextToken // Next page token
 		} else {
-			err := errors.New("Failed: User email not found")
+			err := errors.New("Error: User email not found")
 			return "", err
 		}
 	}
