@@ -12,7 +12,8 @@ import (
 
 // Auth :an example of auth
 func Auth(sess *session.Session, targetId string, permissionSetArn string, principalId string) error {
-	svc := ssoadmin.New(sess)
+	svc := ssoadmin.New(sess, &aws.Config{
+		Region: cfg.Region})
 
 	params := &ssoadmin.CreateAccountAssignmentInput{
 		InstanceArn:      cfg.InstanceArn,

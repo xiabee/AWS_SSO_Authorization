@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"log"
 	"main/lib"
@@ -20,8 +21,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	PermissionSetArn, err := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role1")
-
+	PermissionSetArn, err := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role")
+	fmt.Println(PermissionSetArn)
 	if err != nil {
 		log.Fatal(err)
 	}

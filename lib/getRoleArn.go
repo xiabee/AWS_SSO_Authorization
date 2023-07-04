@@ -10,7 +10,8 @@ import (
 
 // GetPermissionSetName : Get Permission set Arn from Permission set name
 func GetPermissionSetName(sess *session.Session, roleArn string) (string, error) {
-	client := ssoadmin.New(sess)
+	client := ssoadmin.New(sess, &aws.Config{
+		Region: cfg.Region})
 
 	params := &ssoadmin.DescribePermissionSetInput{
 		InstanceArn:      aws.String("arn:aws:sso:::instance/ssoins-7758e707bb6ea352"),
@@ -28,7 +29,8 @@ func GetPermissionSetName(sess *session.Session, roleArn string) (string, error)
 
 // GetPermissionSetArn : Get Permission set Arn from Permission set name
 func GetPermissionSetArn(sess *session.Session, permissionSetName string) (string, error) {
-	client := ssoadmin.New(sess)
+	client := ssoadmin.New(sess, &aws.Config{
+		Region: cfg.Region})
 
 	params := &ssoadmin.ListPermissionSetsInput{
 		InstanceArn: cfg.InstanceArn,

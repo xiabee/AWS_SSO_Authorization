@@ -11,7 +11,8 @@ import (
 )
 
 func Revoke(sess *session.Session, targetId string, permissionSetArn string, principalId string) error {
-	svc := ssoadmin.New(sess)
+	svc := ssoadmin.New(sess, &aws.Config{
+		Region: cfg.Region})
 
 	params := &ssoadmin.DeleteAccountAssignmentInput{
 		InstanceArn:      cfg.InstanceArn,
