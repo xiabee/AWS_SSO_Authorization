@@ -20,7 +20,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	PermissionSetArn, err := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role")
+	PermissionSetArn, err := lib.GetPermissionSetArn(sess, "DBaaS-Prod-ViewOnly-Role1")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 	targetId := "316218510314"
 
 	err = lib.Auth(sess, targetId, PermissionSetArn, userid)

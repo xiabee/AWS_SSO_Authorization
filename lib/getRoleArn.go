@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"errors"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssoadmin"
@@ -58,5 +59,6 @@ func GetPermissionSetArn(sess *session.Session, permissionSetName string) (strin
 			break
 		}
 	}
-	return "PermissionSet Not Found!", nil
+	err := errors.New("PermissionSet Not Found!")
+	return "", err
 }
